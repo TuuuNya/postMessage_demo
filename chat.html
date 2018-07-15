@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Room use postMessage</title>
+</head>
+<body style="text-align: center;">
+    <h3>Chat Room use postMessage</h3>
+    <div id="chat_box" style="width: 500px;border: 1px solid black;margin: 0 auto 20px; text-align: left;">
+        公告：welcome to my chat room
+    </div>
+    <label>发言：<input type="text" id="message"></label>
+    <input onclick="sendMessage()" type="button" value="发送">
+
+
+    <script>
+        window.username = Math.floor(Math.random()*1000);
+        let message = document.getElementById('message');
+        let chat_box = document.getElementById('chat_box');
+        let client_window = window.open('chat2.html');
+        chat_box.appendChild(
+            document.createElement('p')).appendChild(document.createTextNode(`你好：${window.username}`)
+        );
+
+        function sendMessage() {
+            if (!message) return false;
+            let message_text = `${window.username}说: ${message.value}`;
+            client_window.postMessage(message_text, '*');
+            append_html(message_text);
+            message.value = '';
+        }
+
+        window.addEventListener('message', e => {
+            append_html(e.data);
+            console.log(e);
+        });
+
+        function append_html(html) {
+            let p = document.createElement('p');
+            p.innerHTML = html;
+            chat_box.appendChild(p);
+        }
+    </script>
+</body>
+</html>
