@@ -14,12 +14,15 @@
 
 
 <script>
-    window.username = Math.floor(Math.random()*1000);
+    if (localStorage.getItem('username')) {
+        window.username = localStorage.getItem('username');
+    } else {
+        window.username = Math.floor(Math.random()*1000);
+        localStorage.setItem('username', window.username);
+    }
     let message = document.getElementById('message');
     let chat_box = document.getElementById('chat_box');
-    chat_box.appendChild(
-        document.createElement('p')).appendChild(document.createTextNode(`你好：${window.username}`)
-    );
+    chat_box.innerHTML = `<p>你好：${window.username}</p>`;
 
     function sendMessage() {
         if (!message) return false;
